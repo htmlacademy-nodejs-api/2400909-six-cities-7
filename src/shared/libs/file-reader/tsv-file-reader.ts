@@ -1,14 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { CityType } from '../../types/city.type.js';
-import { Offer, HousingType, Location } from '../../types/offer.js';
-import { FileReader } from './file-reader.intertface.js';
+import { Offer, HousingType, Goods } from '../../types/offer.type.js';
+import { FileReader } from './file-reader.interface.js';
 
 
 export class TSVFileReader implements FileReader {
   private rawData = '';
 
   constructor(
-    private readonly filename: string | boolean
+    private readonly filename: string
   ) {}
 
   private validateRawData(): void {
@@ -26,46 +26,49 @@ export class TSVFileReader implements FileReader {
 
   private parseRowToOffer(row: string): Offer {
     const [
-      id,
       title,
-      type,
-      price,
-      previewImage,
+      description,
+      date,
       city,
-      location,
-      isFavorite,
+      previewImage,
+      photo,
       isPremium,
-      rating
+      isFavorite,
+      rating,
+      type,
+      rooms,
+      guests,
+      price,
+      goods,
+      userName,
+      email,
+      avatarUrl,
+      password,
+      isPro,
+      comments,
+      latitude,
+      longitude
     ] = row.split('\t');
 
     return {
-      id,
       title,
-      type: type as HousingType,
-      price: this.parsePrice(price),
-      previewImage,
+      description,
+      date: new Date(date),
       city: city as CityType,
-      location: {latitude, longitude, zoom},
-      isFavorite: this.parseIsFavorite(isFavorite),
-      isPremium: this.parseIsPremium(isPremium),
-      rating: this.parseRating(rating),
+      previewImage,
+      photo: photo.split(';'),
+      isPremium: isPremium === 'true',
+      isFavorite: isFavorite === 'true',
+      rating: parseFloat(rating),
+      type: type as HousingType,
+      rooms: parseInt(rooms, 10),
+      guests: parseInt(guests, 10),
+      price: parseInt(price, 10),
+      goods: goods.split(';') as Goods[],
+      user: {name: userName, email, avatarUrl, password, IsPro: isPro === 'true'},
+      comments: parseInt(comments, 10),
+      location: {latitude, longitude}
     };
-  }
-
-  private parsePrice(priceString: string): number {
-    return Number.parseInt(priceString, 10);
-  }
-
-  private parseRating(ratingString: string): number {
-    return Number.parseFloat(ratingString);
-  }
-
-  private parseIsFavorite(isFavoriteString: string): boolean {
-    return Boolean.parseInt(isFavoriteString);
-  }
-
-  private parseIsPremium(isPremiumString: string): boolean {
-    return Boolean.parseInt(isPremiumString);
   }
 
   public read(): void {
