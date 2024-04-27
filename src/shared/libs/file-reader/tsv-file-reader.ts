@@ -8,7 +8,7 @@ export class TSVFileReader implements FileReader {
   private rawData = '';
 
   constructor(
-    private readonly filename: string
+    private readonly filename: string | boolean
   ) {}
 
   private validateRawData(): void {
@@ -45,9 +45,9 @@ export class TSVFileReader implements FileReader {
       price: this.parsePrice(price),
       previewImage,
       city: city as CityType,
-      location: this.parseLocation(location),
-      isFavorite,
-      isPremium,
+      location: {latitude, longitude, zoom},
+      isFavorite: this.parseIsFavorite(isFavorite),
+      isPremium: this.parseIsPremium(isPremium),
       rating: this.parseRating(rating),
     };
   }
@@ -57,11 +57,15 @@ export class TSVFileReader implements FileReader {
   }
 
   private parseRating(ratingString: string): number {
-    return Number.parseInt(ratingString, 10);
+    return Number.parseFloat(ratingString);
   }
 
-  private parseLocation(latitude: string, longitude: string, zoom: string): number {
-    return Number.parseInt(latitude, 10);
+  private parseIsFavorite(isFavoriteString: string): boolean {
+    return Boolean.parseInt(isFavoriteString);
+  }
+
+  private parseIsPremium(isPremiumString: string): boolean {
+    return Boolean.parseInt(isPremiumString);
   }
 
   public read(): void {
