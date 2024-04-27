@@ -1,5 +1,5 @@
-import { CommandParser } from "./command-parser.js";
-import { Command } from "./command.interface.js";
+import { CommandParser } from './command-parser.js';
+import { Command } from './command.interface.js';
 
 type CommandCollection = Record<string, Command>;
 
