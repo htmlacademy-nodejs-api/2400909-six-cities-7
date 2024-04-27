@@ -1,9 +1,10 @@
 import { Command } from './command.interface.js';
+import { CommandType } from './const.js';
 
 
 export class HelpCommand implements Command {
   public getName(): string {
-    return '--help';
+    return CommandType.Help;
   }
 
   public async execute(..._parameters: string[]): Promise<void> {
