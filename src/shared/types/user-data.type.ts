@@ -3,5 +3,5 @@ export type UserData = {
   email: string;
   avatarUrl: string;
   password: string;
-  IsPro: boolean;
+  isPro: boolean;
 };
