@@ -1,14 +1,18 @@
+import EventEmitter from 'node:events';
+
 import { CityType } from '../../types/city.type.js';
 import { Offer, HousingType, Goods } from '../../types/offer.type.js';
 import { FileReader } from './file-reader.interface.js';
 
 
-export class TSVFileReader implements FileReader {
+export class TSVFileReader extends EventEmitter implements FileReader {
   private rawData = '';
 
   constructor(
     private readonly filename: string
-  ) {}
+  ) {
+    super();
+  }
 
   private validateRawData(): void {
     if (!this.rawData) {
