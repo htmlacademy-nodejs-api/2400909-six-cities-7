@@ -1,4 +1,3 @@
-import { readFileSync } from 'node:fs';
 import { CityType } from '../../types/city.type.js';
 import { Offer, HousingType, Goods } from '../../types/offer.type.js';
 import { FileReader } from './file-reader.interface.js';
@@ -65,14 +64,13 @@ export class TSVFileReader implements FileReader {
       guests: parseInt(guests, 10),
       price: parseInt(price, 10),
       goods: goods.split(';') as Goods[],
-      user: {name: userName, email, avatarUrl, password, IsPro: isPro === 'true'},
+      user: {name: userName, email, avatarUrl, password, isPro: isPro === 'true'},
       comments: parseInt(comments, 10),
       location: {latitude, longitude}
     };
   }
 
   public read(): void {
-    this.rawData = readFileSync(this.filename, 'utf-8');
   }
 
   public toArray(): Offer[] {
