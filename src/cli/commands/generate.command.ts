@@ -2,9 +2,9 @@ import got from 'got';
 import { MockServerData } from '../../shared/types/mock-server-data.type.js';
 import { Command } from './command.interface.js';
 import { CommandType } from './const.js';
-import { TSVOfferGenerator } from '../../shared/libs/file-reader/offer-generator/tsv-offer-generator.js';
+import { TSVOfferGenerator } from '../../shared/libs/offer-generator/tsv-offer-generator.js';
 import { getErrorMessage } from '../../shared/helpers/common.js';
-import { TSVFileWriter } from '../../shared/libs/file-reader/file-writer/tsv-file-writer.js';
+import { TSVFileWriter } from '../../shared/libs/file-writer/tsv-file-writer.js';
 export class GenerateCommand implements Command {
   private initialData: MockServerData;
 
