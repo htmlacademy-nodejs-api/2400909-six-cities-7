@@ -2,6 +2,8 @@ import got from 'got';
 import { MockServerData } from '../../shared/types/mock-server-data.type.js';
 import { Command } from './command.interface.js';
 import { CommandType } from './const.js';
+import { TSVOfferGenerator } from '../../shared/libs/file-reader/offer-generator/tsv-offer-generator.js';
+import { appendFile } from 'node:fs/promises';
 
 export class GenerateCommand implements Command {
   private initialData: MockServerData;
@@ -14,6 +16,17 @@ export class GenerateCommand implements Command {
     }
   }
 
+  private async write(filepath: string, offerCount: number) {
+    const tsvOfferGenerator = new TSVOfferGenerator(this.initialData);
+    for (let i = 0; i < offerCount; i++) {
+      await appendFile(
+        filepath,
+        `${tsvOfferGenerator.generate()}\n`,
+        {encoding: 'utf8'}
+      );
+    }
+  }
+
   public getName(): string {
     return CommandType.Generate;
   }
@@ -22,11 +35,10 @@ export class GenerateCommand implements Command {
     const [count, filepath, url] = parameters;
     const offerCount = Number.parseInt(count, 10);
 
-    // Код для получения данных с сервера.
-    // Формирование объявлений.
-
     try {
       await this.load(url);
+      await this.write(filepath, offerCount);
+      console.info(`File ${filepath} was created!`);
     } catch (error: unknown) {
       console.error('Can\'t generate data');
 
