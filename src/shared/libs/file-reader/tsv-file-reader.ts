@@ -1,30 +1,21 @@
-import { readFileSync } from 'node:fs';
+import EventEmitter from 'node:events';
+import { createReadStream } from 'node:fs';
+
 import { CityType } from '../../types/city.type.js';
 import { Offer, HousingType, Goods } from '../../types/offer.type.js';
 import { FileReader } from './file-reader.interface.js';
 
 
-export class TSVFileReader implements FileReader {
-  private rawData = '';
+export class TSVFileReader extends EventEmitter implements FileReader {
+  private CHUNK_SIZE = 16384; //16KB
 
   constructor(
     private readonly filename: string
-  ) {}
-
-  private validateRawData(): void {
-    if (!this.rawData) {
-      throw new Error('File was not read');
-    }
+  ) {
+    super();
   }
 
-  private parseSourceDataToOffers(): Offer[] {
-    return this.rawData
-      .split('\n')
-      .filter((row) => row.trim())
-      .map((row) => this.parseRowToOffer(row));
-  }
-
-  private parseRowToOffer(row: string): Offer {
+  private parseLineToOffer(line: string): Offer {
     const [
       title,
       description,
@@ -48,7 +39,7 @@ export class TSVFileReader implements FileReader {
       comments,
       latitude,
       longitude
-    ] = row.split('\t');
+    ] = line.split('\t');
 
     return {
       title,
@@ -65,18 +56,38 @@ export class TSVFileReader implements FileReader {
       guests: parseInt(guests, 10),
       price: parseInt(price, 10),
       goods: goods.split(';') as Goods[],
-      user: {name: userName, email, avatarUrl, password, IsPro: isPro === 'true'},
+      user: {name: userName, email, avatarUrl, password, isPro: isPro === 'true'},
       comments: parseInt(comments, 10),
       location: {latitude, longitude}
     };
   }
 
-  public read(): void {
-    this.rawData = readFileSync(this.filename, 'utf-8');
-  }
+  public async read(): Promise<void> {
+    const readStream = createReadStream(this.filename, {
+      highWaterMark: this.CHUNK_SIZE,
+      encoding: 'utf-8',
+    });
 
-  public toArray(): Offer[] {
-    this.validateRawData();
-    return this.parseSourceDataToOffers();
+    let remainingData = '';
+    let nextLinePosition = -1;
+    let importedRowCount = 0;
+
+    for await (const chunk of readStream) {
+      remainingData += chunk.toString();
+      nextLinePosition = remainingData.indexOf('\n');
+
+      while (nextLinePosition >= 0) {
+        const completeRow = remainingData.slice(0, nextLinePosition + 1);
+        remainingData = remainingData.slice(++nextLinePosition);
+        importedRowCount++;
+
+        const parsedOffer = this.parseLineToOffer(completeRow);
+        this.emit('read', parsedOffer);
+
+        nextLinePosition = remainingData.indexOf('\n');
+      }
+    }
+
+    this.emit('end', importedRowCount);
   }
 }
