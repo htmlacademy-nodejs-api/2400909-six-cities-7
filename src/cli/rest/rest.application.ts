@@ -1,4 +1,4 @@
-import { Logger } from "../../shared/libs/logger/logger.interface.js";
+import { Logger } from '../../shared/libs/logger/logger.interface.js';
 
 export class RestApplication {
   constructor(
