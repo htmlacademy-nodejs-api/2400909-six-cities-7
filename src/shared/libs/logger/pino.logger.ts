@@ -1,8 +1,13 @@
-import { pino } from 'pino';
+import { Logger as PinoInstance, pino } from 'pino';
+
 import { Logger } from './logger.interface.js';
 
 export class PinoLogger implements Logger {
-  private readonly logger = pino();
+  private readonly logger: PinoInstance;
+
+  constructor() {
+    this.logger = pino();
+  }
 
   public debug(message: string, ...args: unknown[]): void {
     this.logger.debug(message, ...args);
