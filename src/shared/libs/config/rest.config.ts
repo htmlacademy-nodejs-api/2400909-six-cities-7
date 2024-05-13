@@ -1,6 +1,6 @@
-import { DotenvParseOutput, config } from "dotenv";
-import { Logger } from "../logger/logger.interface.js";
-import { Config } from "./config.interface.js";
+import { DotenvParseOutput, config } from 'dotenv';
+import { Logger } from '../logger/logger.interface.js';
+import { Config } from './config.interface.js';
 
 
 export class RestConfig implements Config {
