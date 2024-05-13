@@ -8,6 +8,7 @@ export class RestApplication {
   ) {}
 
   public async init() {
+    this.logger.info('Application initialization');
     this.logger.info(`Get value from env $PORT: ${this.config.get('PORT')}`);
   }
 }
