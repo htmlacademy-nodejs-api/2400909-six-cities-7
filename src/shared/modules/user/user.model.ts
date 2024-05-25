@@ -7,23 +7,24 @@ export interface UserDocument extends UserData, Document {
 }
 
 const userSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    minlength: [2, 'Min length for firstname is 2'],
+  },
   email: {
     type: String,
     unique: true,
     match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect'],
     required: true,
   },
-  avatarPath: {
+  avatarUrl: String,
+  password: {
     type: String,
     required: true,
-    minlength: [5, 'Min length for avatar path is 5'],
+    minlength: [8, 'Min length for password is 8'],
   },
-  firstname: {
-    type: String,
-    required: true,
-    minlength: [2, 'Min length for firstname is 2'],
-  },
-  lastname: String,
+  isPro: Boolean,
 }, {timestamps: true});
 
-export const UserModel = model<UserDocument>('User', userSchema);
+export const UserModel = model<UserDocument>('UserData', userSchema);
