@@ -1,6 +1,5 @@
 import { Schema, Document, model } from 'mongoose';
 import { UserData } from '../../types/user-data.type.js';
-import { match } from 'assert';
 
 export interface UserDocument extends UserData, Document {
   createAt: Date,
