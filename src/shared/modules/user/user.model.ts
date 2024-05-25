@@ -1,5 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
 import { UserData } from '../../types/user-data.type.js';
+import { match } from 'assert';
 
 export interface UserDocument extends UserData, Document {
   createAt: Date,
@@ -10,9 +11,19 @@ const userSchema = new Schema({
   email: {
     type: String,
     unique: true,
+    match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect'],
+    required: true,
   },
-  avatarPath: String,
-  firstname: String,
+  avatarPath: {
+    type: String,
+    required: true,
+    minlength: [5, 'Min length for avatar path is 5'],
+  },
+  firstname: {
+    type: String,
+    required: true,
+    minlength: [2, 'Min length for firstname is 2'],
+  },
   lastname: String,
 }, {timestamps: true});
 
