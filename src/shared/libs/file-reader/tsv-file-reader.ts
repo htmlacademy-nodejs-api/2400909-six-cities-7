@@ -87,7 +87,7 @@ export class TSVFileReader extends EventEmitter implements FileReader {
           this.emit('line', parsedOffer, resolve);
         });
 
-        // nextLinePosition = remainingData.indexOf('\n');
+        nextLinePosition = remainingData.indexOf('\n');
       }
     }
 

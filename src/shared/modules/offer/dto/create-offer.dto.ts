@@ -10,15 +10,12 @@ export class CreateOfferDto {
   public previewImage: string;
   public photo: string[];
   public isPremium: boolean;
-  public isFavorite: boolean;
-  public rating: number;
   public type: HousingType;
   public rooms: number;
   public guests: number;
   public price: number;
   public goods: Goods[];
   public user: UserData;
-  public commentCount: number;
   public location: Location;
   public userId: string;
 }
