@@ -36,4 +36,8 @@ export class DefaultUserService implements UserService {
 
     return this.create(dto, salt);
   }
+
+  public async find(): Promise<DocumentType<UserEntity>> {
+    return this.userModel.find();
+  }
 }
