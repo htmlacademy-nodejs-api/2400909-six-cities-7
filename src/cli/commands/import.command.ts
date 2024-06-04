@@ -1,4 +1,3 @@
-import { Logger } from 'pino';
 import { getErrorMessage } from '../../shared/helpers/common.js';
 import { DatabaseClient } from '../../shared/libs/database-client/database-client.interface.js';
 import { TSVFileReader } from '../../shared/libs/file-reader/tsv-file-reader.js';
@@ -15,6 +14,7 @@ import { UserModel } from '../../shared/modules/user/user.entity.js';
 import { MongoDatabaseClient } from '../../shared/libs/database-client/mongo.database-client.js';
 import { DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD } from './command.constant.js';
 import { getMongoURI } from '../../shared/helpers/database.js';
+import { Logger } from '../../shared/libs/logger/logger.interface.js';
 
 export class ImportCommand implements Command {
   private userService: UserService;
@@ -37,7 +37,7 @@ export class ImportCommand implements Command {
     return CommandType.Import;
   }
 
-  private onImportedOffer(offer: Offer, resolve: () => void) {
+  private async onImportedOffer(offer: Offer, resolve: () => void) {
     await this.saveOffer(offer);
     resolve();
   }
@@ -57,15 +57,12 @@ export class ImportCommand implements Command {
       previewImage: offer.previewImage,
       photo: offer.photo,
       isPremium: offer.isPremium,
-      isFavorite: offer.isFavorite,
-      rating: offer.rating,
       type: offer.type,
       rooms: offer.rooms,
       guests: offer.guests,
       price: offer.price,
       goods: offer.goods,
       user: offer.user,
-      comments: offer.comments,
       location: offer.location,
     });
   }
