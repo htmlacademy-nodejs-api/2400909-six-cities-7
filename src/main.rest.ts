@@ -5,12 +5,23 @@ import { RestApplication } from './cli/rest/rest.application.js';
 import { Component } from './shared/types/component.enum.js';
 import { createRestApplicationContainer } from './rest/rest.container.js';
 import { createUserContainer } from './shared/modules/user/user.container.js';
+import { createOfferContainer } from './shared/modules/offer/offer.container.js';
+import { createCommentContainer } from './shared/modules/comment/comment.container.js';
+import { DefaultOfferService } from './shared/modules/offer/default-offer.service.js';
 
 async function bootstrap() {
-  const appContainer = Container.merge(createRestApplicationContainer(), createUserContainer());
+  const appContainer = Container.merge(
+    createRestApplicationContainer(),
+    createUserContainer(),
+    createOfferContainer(),
+    createCommentContainer(),
+  );
 
   const application = appContainer.get<RestApplication>(Component.RestApplication);
   await application.init();
+
+  const offerService = appContainer.get<DefaultOfferService>(Component.OfferService);
+  await offerService.find();
 }
 
 bootstrap();
