@@ -23,6 +23,7 @@ export class MongoDatabaseClient implements DatabaseClient {
   public async connect(uri: string): Promise<void> {
     if (this.isConnected) {
       throw new Error('MongoDB client already connected');
+      return;
     }
 
     this.logger.info('Trying to connect to MongoDB...');
