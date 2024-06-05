@@ -15,6 +15,9 @@ tags:
   - name: comments
     description: Действия с комментариями.
 
+security:
+  - bearer: []
+
 paths:
   /offers:
     post:
@@ -22,15 +25,6 @@ paths:
         - offers
       summary: Создание нового предложения.
       description: Регистрирует новое предложение.
-
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: T2xpdjfjjOIUcnk7BnbWFpbC5jb298=
 
       requestBody:
         description: Информация для создания нового предложения.
@@ -69,15 +63,6 @@ paths:
       summary: Получить предложение.
       description: Возвращает детальную информацию по предложению.
 
-      parameters:
-        - name: offerId
-          in: path
-          description: Уникальный идентификатор предложения
-          required: true
-          schema:
-            type: number
-            example: 1
-
       responses:
         "200":
           description: Возвращает объект предложения.
@@ -97,15 +82,6 @@ paths:
         - offers
       summary: Редактирование предложения.
       description: Редактирует предложение по аренды.
-
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: T2xpdjfjjOIUcnk7BnbWFpbC5jb298=
 
       requestBody:
         description: Обновленная информация о предложении.
@@ -143,15 +119,6 @@ paths:
       summary: Удаление предложения по аренде.
       description: Удаляет предложение по аренде.
 
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
-
       responses:
         "204":
           description: Предложение успешно удалено.
@@ -170,24 +137,6 @@ paths:
         - comments
       summary: Получить список комментариев.
       description: Возвращает список комментариев для предложения.
-
-      operationId: getComment
-      parameters:
-        - name: offerId
-          in: path
-          description: Уникальный идентификатор предложения.
-          required: true
-          schema:
-            type: number
-            example: 1
-
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: false
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
 
       responses:
         '200':
@@ -211,24 +160,6 @@ paths:
         - comments
       summary: Добавит новый комментарий
       description: Добавляет новый комментарий для предложения.
-
-      operationId: postComment
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
-
-        - name: offerId
-          in: path
-          description: Уникальный идентификатор предложения
-          required: true
-          schema:
-            type: number
-            example: 1
 
       requestBody:
         description: Объект с новым комментарием
@@ -261,11 +192,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/authErrorMessage'
-
-      security:
-        - tokenAuth: []
-
-
 
   /users/register:
     post:
@@ -300,15 +226,6 @@ paths:
       summary: Вход в закрытую часть приложения.
       description: Вход в закрытую часть приложения.
 
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
-
       responses:
         "200":
           description: Пользователь авторизован. Объект пользователя.
@@ -334,20 +251,9 @@ paths:
       summary: Завершение пользовательского сеанса.
       description: Выход из закрытой части приложения.
 
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
-
       responses:
         "204":
           description: Выход выполнен.
-      security:
-        - tokenAuth: []
 
   /offers/{city}/premium:
     get:
@@ -355,15 +261,6 @@ paths:
         - offers
       summary: Получить список всех премиальных предложений для города.
       description: Получить список всех премиальных предложений для города (не более 3-х).
-
-      parameters:
-        - name: city
-          in: path
-          description: Наименование города.
-          required: true
-          schema:
-            type: number
-            example: 1
 
       responses:
         "200":
@@ -387,15 +284,6 @@ paths:
       summary: Получит список избранных предложений.
       description: Получит весь список избранных предложений.
 
-      parameters:
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
-
       responses:
         "200":
           description: Возвращает список избранных предложений.
@@ -411,29 +299,12 @@ paths:
               schema:
                 $ref: '#/components/schemas/authErrorMessage'
 
-  /offers/favorites/{offerId}/{action}:
+  /offers/favorites/{offerId}:
     post:
       tags:
         - offers
-      summary: Добавляет или удаляет предложение из избранного.
-      description: Добавляет или удаляет предложение из избранного.
-
-      parameters:
-        - name: offerId
-          in: path
-          description: Уникальный идентификатор предложения по аренде.
-          required: true
-          schema:
-            type: number
-            example: 1
-
-        - name: X-Token
-          in: header
-          description: Авторизационный токен пользователя
-          required: true
-          schema:
-            type: string
-            example: NM87xpdmVyLmNvbm5lckBnbWFpbC5jb980
+      summary: Добавляет предложение в избранное.
+      description: Добавляет предложение в избранное.
 
       responses:
         "200":
@@ -454,7 +325,39 @@ paths:
               schema:
                 $ref: '#/components/schemas/authErrorMessage'
 
+    delete:
+      tags:
+        - offers
+      summary: Удаляет предложение из избранного.
+      description: Удаляет предложение из избранного.
+
+      responses:
+        "200":
+          description: Возвращает список предложений.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Предложение с идентификатором 9 успешно удалено из избранного.
+
+        "403":
+          description: Пользователь не авторизован.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/authErrorMessage'
+
 components:
+
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
 
     user:
@@ -550,8 +453,8 @@ components:
         images:
           type: array
           example: [
-            https://15.design.htmlacademy.pro/static/hotel/3.jpg,
-            https://15.design.htmlacademy.pro/static/hotel/11.jpg
+            'https://15.design.htmlacademy.pro/static/hotel/3.jpg',
+            'https://15.design.htmlacademy.pro/static/hotel/11.jpg'
           ]
 
         isPremium:
@@ -743,9 +646,3 @@ components:
         error:
           type: string
           example: Предложение не найдено.
-
-  securitySchemes:
-    tokenAuth:
-      type: apiKey
-      name: X-Token
-      in: header

@@ -2,7 +2,6 @@ import { Ref, defaultClasses, getModelForClass, modelOptions, prop } from '@type
 import { CityType } from '../../types/city.type.js';
 import { Goods, HousingType, Location } from '../../types/offer.type.js';
 import { UserEntity } from '../user/user.entity.js';
-import { UserData } from '../../types/user-data.type.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface OfferEntity extends defaultClasses.Base {}
@@ -41,10 +40,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public isPremium: boolean;
 
   @prop({
-    // ref: HousingType,
     required: true
   })
-  public type!: Ref<HousingType>;
+  public type!: HousingType;
 
   @prop()
   public rooms: number;
@@ -56,23 +54,21 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public price: number;
 
   @prop({
-    // ref: Goods,
     required: true,
     default: [],
   })
-  public goods: Ref<Goods>[];
+  public goods: Goods[];
 
   @prop({
-    // ref: UserData,
+    ref: UserEntity,
     required: true
   })
-  public user!: Ref<UserData>;
+  public user!: Ref<UserEntity>;
 
   @prop({
-    // ref: Location,
     required: true,
   })
-  public location: Ref<Location>;
+  public location: Location;
 
   @prop({
     ref: UserEntity,

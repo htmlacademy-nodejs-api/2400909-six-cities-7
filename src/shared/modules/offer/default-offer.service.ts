@@ -25,14 +25,14 @@ export class DefaultOfferService implements OfferService {
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findById(offerId)
-      .populate(['userId', 'offers'])
+      .populate('userId')
       .exec();
   }
 
   public async find(): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find()
-      .populate(['userId', 'offers'])
+      .populate('userId')
       .exec();
   }
 
@@ -45,13 +45,13 @@ export class DefaultOfferService implements OfferService {
   public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
-      .populate(['userId', 'offers'])
+      .populate('userId')
       .exec();
   }
 
   public async exists(documentId: string): Promise<boolean> {
-    return (await this.offerModel
-      .exists({_id: documentId})) !== null;
+    const document = await this.offerModel.exists({_id: documentId});
+    return document !== null;
   }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
@@ -66,7 +66,7 @@ export class DefaultOfferService implements OfferService {
       .find()
       .sort({createAt: SortType.Down})
       .limit(count)
-      .populate(['userId', 'offers'])
+      .populate('userId')
       .exec();
   }
 
@@ -75,7 +75,7 @@ export class DefaultOfferService implements OfferService {
       .find()
       .sort({commentCount: SortType.Down})
       .limit(count)
-      .populate(['userId', 'offers'])
+      .populate('userId')
       .exec();
   }
 }
