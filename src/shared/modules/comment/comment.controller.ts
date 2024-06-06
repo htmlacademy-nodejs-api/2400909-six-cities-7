@@ -5,6 +5,8 @@ import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/logger.interface.js';
 import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { CommentService } from './comment-service.interface.js';
+import { fillDTO } from '../../helpers/common.js';
+import { CommentRdo } from './rdo/comment.rdo.js';
 
 @injectable()
 export class CommentController extends BaseController {
@@ -22,7 +24,8 @@ export class CommentController extends BaseController {
 
   public async index(_req: Request, res: Response): Promise<void> {
     const comments = await this.commentService.findByOfferId();
-    this.ok(res, comments);
+    const responseData = fillDTO(CommentRdo, comments);
+    this.ok(res, responseData);
   }
 
   public create(_req: Request, res: Response): void {
