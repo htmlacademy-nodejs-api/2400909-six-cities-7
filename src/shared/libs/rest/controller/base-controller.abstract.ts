@@ -20,7 +20,7 @@ export abstract class BaseController implements Controller {
     return this._router;
   }
 
-  public addRouter(route: Route): void {
+  public addRoute(route: Route): void {
     this._router[route.method](route.path, route.handler.bind(this));
     this.logger.info(`Route registered: ${route.method.toUpperCase()}${route.path}`);
   }

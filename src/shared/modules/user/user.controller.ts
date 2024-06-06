@@ -1,28 +1,31 @@
-import { inject, injectable } from "inversify";
-import { Request, Response } from "express";
-import { BaseController } from "../../libs/rest/controller/base-controller.abstract.js";
-import { Component } from "../../types/component.enum.js";
-import { Logger } from "../../libs/logger/logger.interface.js";
-import { HttpMethod } from "../../libs/rest/types/http-method.enum.js";
+import { inject, injectable } from 'inversify';
+import { Request, Response } from 'express';
+import { BaseController } from '../../libs/rest/controller/base-controller.abstract.js';
+import { Component } from '../../types/component.enum.js';
+import { Logger } from '../../libs/logger/logger.interface.js';
+import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
+import { UserService } from './user-service.interface.js';
 
 @injectable()
-export class UserController extends BaseController {
+export class CommentController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
+    @inject(Component.UserService) protected readonly userService: UserService,
   ) {
     super(logger);
 
-    this.logger.info('Register routes for UserController…');
+    this.logger.info('Register routes for CommentController…');
 
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
   }
 
-  public index(req: Request, res: Response): void {
-    // Код обработчика
+  public async index(_req: Request, res: Response): Promise<void> {
+    const users = await this.userService.findByEmail();
+    this.ok(res, users);
   }
 
-  public create(req: Request, res: Response): void {
+  public create(_req: Request, res: Response): void {
     // Код обработчика
   }
 }
