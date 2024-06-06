@@ -10,7 +10,7 @@ import { OfferRdo } from './rdo/offer.rdo.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 
 @injectable()
-export class CommentController extends BaseController {
+export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService) protected readonly offerService: OfferService,
