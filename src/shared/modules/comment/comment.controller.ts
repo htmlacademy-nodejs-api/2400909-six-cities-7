@@ -9,6 +9,7 @@ import { fillDTO } from '../../helpers/common.js';
 import { CommentRdo } from './rdo/comment.rdo.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { StatusCodes } from 'http-status-codes';
+import { HttpError } from '../../libs/rest/errors/http-error.js';
 
 @injectable()
 export class CommentController extends BaseController {
@@ -38,13 +39,11 @@ export class CommentController extends BaseController {
     const existComment = await this.commentService.findByOfferId(body.offerId);
 
     if (existComment) {
-      const existCommentError = new Error(`Comment for this offer "${body.offerId}" exists.`);
-      this.send(res,
+      throw new HttpError (
         StatusCodes.UNPROCESSABLE_ENTITY,
-        {error: existCommentError.message}
+        `Comment by this offer "${body.offerId}" exists.`,
+        'CommentController'
       );
-
-      return this.logger.error(existCommentError.message, existCommentError);
     }
 
     const result = await this.commentService.create(body);
