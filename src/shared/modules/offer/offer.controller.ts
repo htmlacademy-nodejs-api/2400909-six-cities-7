@@ -7,6 +7,7 @@ import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { OfferService } from './offer-service.interface.js';
 import { fillDTO } from '../../helpers/common.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
 
 @injectable()
 export class CommentController extends BaseController {
@@ -28,7 +29,12 @@ export class CommentController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public create(_req: Request, res: Response): void {
-    // Код обработчика
+  public async create(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateOfferDto>,
+    res: Response
+  ): Promise<void> {
+
+    const result = await this.offerService.create(body);
+    this.created(res, fillDTO(OfferRdo, result));
   }
 }

@@ -7,6 +7,8 @@ import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { CommentService } from './comment-service.interface.js';
 import { fillDTO } from '../../helpers/common.js';
 import { CommentRdo } from './rdo/comment.rdo.js';
+import { CreateCommentDto } from './dto/create-comment.dto.js';
+import { StatusCodes } from 'http-status-codes';
 
 @injectable()
 export class CommentController extends BaseController {
@@ -28,7 +30,24 @@ export class CommentController extends BaseController {
     this.ok(res, responseData);
   }
 
-  public create(_req: Request, res: Response): void {
-    // Код обработчика
+  public async create(
+    {body}: Request<Record<string, unknown>, Record<string, unknown>, CreateCommentDto>,
+    res: Response
+  ): Promise<void> {
+
+    const existComment = await this.commentService.findByOfferId(body.offerId);
+
+    if (existComment) {
+      const existCommentError = new Error(`Comment for this offer "${body.offerId}" exists.`);
+      this.send(res,
+        StatusCodes.UNPROCESSABLE_ENTITY,
+        {error: existCommentError.message}
+      );
+
+      return this.logger.error(existCommentError.message, existCommentError);
+    }
+
+    const result = await this.commentService.create(body);
+    this.created(res, fillDTO(CommentRdo, result));
   }
 }
