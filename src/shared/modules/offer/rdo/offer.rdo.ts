@@ -10,8 +10,8 @@ export class OfferRdo {
   @Expose()
   public description: string;
 
-  @Expose()
-  public date: Date;
+  @Expose({name: 'createdAt'})
+  public date: string;
 
   @Expose()
   public city: CityType;
