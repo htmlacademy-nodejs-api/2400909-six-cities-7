@@ -6,7 +6,7 @@ import { Logger } from '../../libs/logger/logger.interface.js';
 import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { OfferService } from './offer-service.interface.js';
 import { fillDTO } from '../../helpers/common.js';
-import { CreateOfferDto } from './dto/create-offer.dto.js';
+// import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { HttpError } from '../../libs/rest/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
@@ -25,6 +25,7 @@ export class OfferController extends BaseController {
     this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.show });
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete });
   }
 
   public async show({params}: Request, _res: Response): Promise<void> {
@@ -51,5 +52,19 @@ export class OfferController extends BaseController {
     const result = await this.offerService.create(body);
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
+  }
+
+  public async delete({params}: Request, res: Response): Promise<void> {
+    const offer = await this.offerService.deleteById(params.offerId);
+
+    if (!offer) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id ${params.offerId} not found.`,
+        'OfferController',
+      );
+    }
+
+    this.noContent(res, offer);
   }
 }
