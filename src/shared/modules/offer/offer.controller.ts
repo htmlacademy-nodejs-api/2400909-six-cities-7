@@ -5,11 +5,11 @@ import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/logger.interface.js';
 import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { OfferService } from './offer-service.interface.js';
-// import { fillDTO } from '../../helpers/common.js';
-// import { OfferRdo } from './rdo/offer.rdo.js';
+import { fillDTO } from '../../helpers/common.js';
 // import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { HttpError } from '../../libs/rest/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
+import { OfferRdo } from './rdo/offer.rdo.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -37,7 +37,7 @@ export class OfferController extends BaseController {
       );
     }
 
-    this.ok(_res, offer);
+    this.ok(_res, fillDTO(OfferRdo, offer));
   }
 
   // public async create(

@@ -1,7 +1,7 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { CityType } from '../../../types/city.type.js';
 import { Goods, HousingType, Location } from '../../../types/offer.type.js';
-import { UserData } from '../../../types/user-data.type.js';
+import { UserRdo } from '../../user/rdo/user.rdo.js';
 
 export class OfferRdo {
   @Expose()
@@ -40,8 +40,9 @@ export class OfferRdo {
   @Expose()
   public goods: Goods[];
 
-  @Expose()
-  public user: UserData;
+  @Expose({name: 'userId'})
+  @Type(() => UserRdo)
+  public user: UserRdo;
 
   @Expose()
   public location: Location;
