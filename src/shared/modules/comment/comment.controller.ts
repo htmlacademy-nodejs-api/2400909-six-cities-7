@@ -1,5 +1,5 @@
 import { inject, injectable } from 'inversify';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { BaseController } from '../../libs/rest/controller/base-controller.abstract.js';
 import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/logger.interface.js';
@@ -7,7 +7,7 @@ import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { CommentService } from './comment-service.interface.js';
 import { fillDTO } from '../../helpers/common.js';
 import { CommentRdo } from './rdo/comment.rdo.js';
-import { CreateCommentDto } from './dto/create-comment.dto.js';
+// import { CreateCommentDto } from './dto/create-comment.dto.js';
 import { StatusCodes } from 'http-status-codes';
 import { HttpError } from '../../libs/rest/errors/http-error.js';
 import { OfferService } from '../offer/offer-service.interface.js';
