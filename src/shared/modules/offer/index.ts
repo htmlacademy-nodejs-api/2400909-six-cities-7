@@ -5,3 +5,4 @@ export { OfferService } from './offer-service.interface.js';
 export { createOfferContainer } from './offer.container.js';
 export { OfferEntity, OfferModel } from './offer.entity.js';
 export { OfferController } from './offer.controller.js';
+export { CreateOfferRequest } from './type/create-offer-request.type.js';
