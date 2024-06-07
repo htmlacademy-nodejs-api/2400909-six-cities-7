@@ -4,7 +4,7 @@ import { BaseController } from '../../libs/rest/controller/base-controller.abstr
 import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/logger.interface.js';
 import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
-// import { OfferService } from './offer-service.interface.js';
+import { OfferService } from './offer-service.interface.js';
 // import { fillDTO } from '../../helpers/common.js';
 // import { OfferRdo } from './rdo/offer.rdo.js';
 // import { CreateOfferDto } from './dto/create-offer.dto.js';
@@ -15,7 +15,7 @@ import { StatusCodes } from 'http-status-codes';
 export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) logger: Logger,
-    // @inject(Component.OfferService) protected readonly offerService: OfferService,
+    @inject(Component.OfferService) protected readonly offerService: OfferService,
   ) {
     super(logger);
 
@@ -25,16 +25,19 @@ export class OfferController extends BaseController {
     this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.show });
   }
 
-  public async show(_req: Request, _res: Response): Promise<void> {
-    // const offers = await this.offerService.find();
+  public async show({params}: Request, _res: Response): Promise<void> {
+    const offer = await this.offerService.findById(params.offerId);
     // const responseData = fillDTO(OfferRdo, offers);
-    // this.ok(res, responseData);
 
-    throw new HttpError(
-      StatusCodes.NOT_IMPLEMENTED,
-      'Not implemented',
-      'OfferController',
-    );
+    if (!offer) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id ${params.offerId} not found.`,
+        'OfferController',
+      );
+    }
+
+    this.ok(_res, offer);
   }
 
   // public async create(
