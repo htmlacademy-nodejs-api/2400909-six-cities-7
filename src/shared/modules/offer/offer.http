@@ -23,7 +23,7 @@ Content-Type: application/json
 {
   "userId": "6af6f711-c28d-4121-82cd-e0b462a27f00",
   "title": "Beautiful & luxurious studio at great location",
-  "description": "A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.",
+  "description": "A quiet cozy and picturesque that hides behind a river by the unique lightness of Amsterdam.",
   "date": "2024-06-07T11:56:37.573Z",
   "city": "Amsterdam",
   "previewImage": "https://url-to-image/image.png",
@@ -52,5 +52,18 @@ Content-Type: application/json
 # Удалить приложение по идентификатору
 
 DELETE http://localhost:4000/offers/6af6f711-c28d-4121-82cd-e0b462a27f00 HTTP/1.1
+
+###
+
+# Обновить предложение
+
+PATCH http://localhost:4000/offers/652e71c6d9f30c786a73f139 HTTP/1.1
+Content-Type: application/json
+
+{
+  "title": "Beautiful & luxurious studio",
+  "description": "A river by the unique lightness of Paris.",
+  "price": 110
+}
 
 ###
