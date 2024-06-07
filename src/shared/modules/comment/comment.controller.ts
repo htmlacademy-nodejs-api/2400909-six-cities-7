@@ -25,8 +25,8 @@ export class CommentController extends BaseController {
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
   }
 
-  public async index(_req: Request, res: Response): Promise<void> {
-    const comments = await this.commentService.findByOfferId();
+  public async index({params}: Request, res: Response): Promise<void> {
+    const comments = await this.commentService.findByOfferId(params.offerId);
     const responseData = fillDTO(CommentRdo, comments);
     this.ok(res, responseData);
   }
