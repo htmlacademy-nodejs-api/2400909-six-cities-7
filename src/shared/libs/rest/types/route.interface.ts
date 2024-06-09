@@ -6,5 +6,5 @@ export interface Route {
   path: string;
   method: HttpMethod;
   handler: (req: Request, res: Response, next: NextFunction) => void;
-  middleware: Middleware[];
+  middlewares?: Middleware[];
 }
