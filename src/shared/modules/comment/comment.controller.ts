@@ -12,6 +12,8 @@ import { StatusCodes } from 'http-status-codes';
 import { HttpError } from '../../libs/rest/errors/http-error.js';
 import { OfferService } from '../offer/offer-service.interface.js';
 import { CreateCommentRequest } from './types/create-comment-request.type.js';
+import { ValidateDtoMiddleware } from '../../libs/rest/middleware/validate-dto.middleware.js';
+import { CreateCommentDto } from './dto/create-comment.dto.js';
 
 @injectable()
 export class CommentController extends BaseController {
@@ -25,7 +27,12 @@ export class CommentController extends BaseController {
     this.logger.info('Register routes for CommentController…');
 
     // this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)]
+    });
   }
 
   // public async index({params}: Request, res: Response): Promise<void> {
