@@ -19,7 +19,7 @@ export class CreateOfferDto {
   @MaxLength(1024, { message: CreateOfferValidationMessage.description.maxLength })
   public description: string;
 
-  @IsDateString({}, { message: CreateOfferValidationMessage.dateOfPublication.invalidFormat })
+  @IsDateString({}, { message: CreateOfferValidationMessage.date.invalidFormat })
   public date: Date;
 
   @IsString({ message: CreateOfferValidationMessage.type.invalid })
@@ -60,7 +60,7 @@ export class CreateOfferDto {
   // @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   // public user: UserData;
 
-  @IsString({each: true})
+  @IsString()
   public location: Location;
 
   @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })

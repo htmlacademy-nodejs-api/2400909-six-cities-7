@@ -1,4 +1,4 @@
-export const CreateOfferValidationMessage = {
+export const UpdateOfferMessages = {
   title: {
     minLength: 'Minimum title length must be 10',
     maxLength: 'Maximum title length must be 100',
@@ -11,7 +11,7 @@ export const CreateOfferValidationMessage = {
     invalidFormat: 'dateOfPublication must be a valid ISO date',
   },
   city: {
-    invalid: 'The city field must be a valid',
+    invalid: 'cityId field must be a valid id',
   },
   previewImage: {
     maxLength: 'Too short for field «image»',
@@ -22,13 +22,10 @@ export const CreateOfferValidationMessage = {
     arrayMaxSize: 'Maximum length of array images must be 6'
   },
   isPremium: {
-    invalidFormat: 'isPremium must be an boolean',
-  },
-  isFavorite: {
-    invalidFormat: 'isFavorite must be an boolean',
+    invalidFormat: 'isPremium must be a boolean',
   },
   type: {
-    invalid: 'invalid housing type',
+    invalid: 'invalid offer type',
   },
   bedrooms: {
     invalidFormat: 'Bedrooms must be an integer',
@@ -47,5 +44,5 @@ export const CreateOfferValidationMessage = {
   },
   userId: {
     invalidId: 'userId field must be a valid id',
-  },
+  }
 } as const;
