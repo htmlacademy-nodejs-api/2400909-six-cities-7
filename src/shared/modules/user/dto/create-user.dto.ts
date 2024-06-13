@@ -1,6 +1,6 @@
 import { IsString, IsEmail, Length, IsBoolean } from 'class-validator';
 
-import { CreateUserMessages } from "./create-user.messages.js";
+import { CreateUserMessages } from './create-user.messages.js';
 
 export class CreateUserDto {
   @IsString({ message: CreateUserMessages.name.invalidFormat })

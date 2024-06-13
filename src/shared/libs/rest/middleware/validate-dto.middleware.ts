@@ -1,8 +1,8 @@
-import { ClassConstructor, plainToInstance } from "class-transformer";
-import { Middleware } from "./middleware.interface.js";
-import { Request, Response, NextFunction } from "express";
-import { validate } from "class-validator";
-import { StatusCodes } from "http-status-codes";
+import { ClassConstructor, plainToInstance } from 'class-transformer';
+import { Middleware } from './middleware.interface.js';
+import { Request, Response, NextFunction } from 'express';
+import { validate } from 'class-validator';
+import { StatusCodes } from 'http-status-codes';
 
 export class ValidateDtoMiddleware implements Middleware {
   constructor(private dto: ClassConstructor<object>) {}
