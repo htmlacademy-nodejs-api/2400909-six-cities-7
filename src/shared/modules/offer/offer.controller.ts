@@ -17,6 +17,8 @@ import { ParamOfferId } from './type/param-offerid.type.js';
 import { CommentRdo } from '../comment/rdo/comment.rdo.js';
 import { ValidateObjectIdMiddleware } from '../../libs/rest/middleware/validate-objectid.middleware.js';
 import { DEFAULT_DISCUSSED_OFFER_COUNT, DEFAULT_NEW_OFFER_COUNT } from './offer.constant.js';
+import { ValidateDtoMiddleware } from '../../libs/rest/middleware/validate-dto.middleware.js';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -36,7 +38,12 @@ export class OfferController extends BaseController {
       middlewares: [new ValidateObjectIdMiddleware('offerId')]
     });
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+    });
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
