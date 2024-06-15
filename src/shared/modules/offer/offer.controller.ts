@@ -1,12 +1,12 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
+
 import { BaseController } from '../../libs/rest/controller/base-controller.abstract.js';
 import { Component } from '../../types/component.enum.js';
 import { Logger } from '../../libs/logger/logger.interface.js';
 import { HttpMethod } from '../../libs/rest/types/http-method.enum.js';
 import { OfferService } from './offer-service.interface.js';
 import { fillDTO } from '../../helpers/common.js';
-// import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { HttpError } from '../../libs/rest/errors/http-error.js';
 import { StatusCodes } from 'http-status-codes';
@@ -19,6 +19,7 @@ import { ValidateObjectIdMiddleware } from '../../libs/rest/middleware/validate-
 import { DEFAULT_DISCUSSED_OFFER_COUNT, DEFAULT_NEW_OFFER_COUNT } from './offer.constant.js';
 import { ValidateDtoMiddleware } from '../../libs/rest/middleware/validate-dto.middleware.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
+import { DocumentExistsMiddleware } from '../../libs/rest/middleware/document-exists.middleware.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -63,7 +64,10 @@ export class OfferController extends BaseController {
       path: '/:offerId/comments',
       method: HttpMethod.Get,
       handler: this.getComments,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+      ]
     });
     this.addRoute({path: '/bundles/new', method: HttpMethod.Get, handler: this.getNew});
     this.addRoute({path: '/bundles/discussed', method: HttpMethod.Get, handler: this.getDiscussed});
@@ -71,7 +75,6 @@ export class OfferController extends BaseController {
 
   public async show({params}: Request<ParamOfferId>, _res: Response): Promise<void> {
     const offer = await this.offerService.findById(params.offerId);
-    // const responseData = fillDTO(OfferRdo, offers);
 
     if (!offer) {
       throw new HttpError(
