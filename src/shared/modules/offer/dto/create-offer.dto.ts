@@ -1,5 +1,5 @@
 import { MinLength, MaxLength,
-  IsDateString, IsMongoId,
+  IsDateString,
   IsInt, Max, Min,
   IsBoolean, IsArray,
   ArrayMinSize, ArrayMaxSize,
