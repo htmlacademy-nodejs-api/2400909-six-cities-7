@@ -62,7 +62,6 @@ export class ImportCommand implements Command {
       guests: offer.guests,
       price: offer.price,
       goods: offer.goods,
-      user: offer.user,
       location: offer.location,
     });
   }

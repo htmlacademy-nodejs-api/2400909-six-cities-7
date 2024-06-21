@@ -7,7 +7,6 @@ import { MinLength, MaxLength,
 
 import { CityType } from '../../../types/city.type.js';
 import { Goods, HousingType, Location } from '../../../types/offer.type.js';
-// import { UserData } from '../../../types/user-data.type.js';
 import { CreateOfferValidationMessage } from './create-offer.message.js';
 
 export class CreateOfferDto {
@@ -56,9 +55,6 @@ export class CreateOfferDto {
 
   @IsString({each: true})
   public goods: Goods[];
-
-  // @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
-  // public user: UserData;
 
   @IsString()
   public location: Location;
