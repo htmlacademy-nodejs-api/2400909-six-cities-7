@@ -1,11 +1,11 @@
-import { NextFunction, Request, Response } from "express";
-import { jwtVerify } from "jose";
-import { StatusCodes } from "http-status-codes";
+import { NextFunction, Request, Response } from 'express';
+import { jwtVerify } from 'jose';
+import { StatusCodes } from 'http-status-codes';
 
-import { createSecretKey } from "node:crypto";
-import { TokenPayload } from "../../../modules/auth/types/TokenPayload.js";
-import { Middleware } from "./middleware.interface.js";
-import { HttpError } from "../errors/http-error.js";
+import { createSecretKey } from 'node:crypto';
+import { TokenPayload } from '../../../modules/auth/types/TokenPayload.js';
+import { Middleware } from './middleware.interface.js';
+import { HttpError } from '../errors/http-error.js';
 
 function isTokenPayload(payload: unknown): payload is TokenPayload {
   return (
