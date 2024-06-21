@@ -59,6 +59,5 @@ export class CreateOfferDto {
   @IsString()
   public location: Location;
 
-  @IsMongoId({ message: CreateOfferValidationMessage.userId.invalidId })
   public userId: string;
 }
