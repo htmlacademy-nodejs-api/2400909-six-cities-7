@@ -1,17 +1,19 @@
-import { inject, injectable } from "inversify";
+import { inject, injectable } from 'inversify';
 import * as crypto from 'node:crypto';
 import { SignJWT } from 'jose';
 
-import { AuthService } from "./auth-service.interface.js";
-import { Component } from "../../types/component.enum.js";
-import { Logger } from "../../libs/logger/logger.interface.js";
-import { UserService } from "../user/user-service.interface.js";
-import { Config } from "../../libs/config/config.interface.js";
-import { RestSchema } from "../../libs/config/rest.schema.js";
-import { UserEntity } from "../user/user.entity.js";
-import { TokenPayload } from "./types/TokenPayload.js";
-import { JWT_ALGORITHM, JWT_EXPIRED } from "./auth.constant.js";
-import { LoginUserDto } from "../user/dto/login-user.dto.js";
+import { AuthService } from './auth-service.interface.js';
+import { Component } from '../../types/component.enum.js';
+import { Logger } from '../../libs/logger/logger.interface.js';
+import { UserService } from '../user/user-service.interface.js';
+import { Config } from '../../libs/config/config.interface.js';
+import { RestSchema } from '../../libs/config/rest.schema.js';
+import { UserEntity } from '../user/user.entity.js';
+import { TokenPayload } from './types/TokenPayload.js';
+import { JWT_ALGORITHM, JWT_EXPIRED } from './auth.constant.js';
+import { LoginUserDto } from '../user/dto/login-user.dto.js';
+import { UserNotFoundException } from './errors/user-not-found.exception.js';
+import { UserPasswordIncorrectException } from './errors/user-password-incorrect.exception.js';
 
 @injectable()
 export class DefaultAuthClass implements AuthService {
