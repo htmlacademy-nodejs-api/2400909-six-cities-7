@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
+import cors from 'cors';
 
 import { Component } from '../shared/types/component.enum.js';
 import { Logger } from '../shared/libs/logger/logger.interface.js';
@@ -70,6 +71,7 @@ export class RestApplication {
       express.static(this.config.get('STATIC_DIRECTORY_URL'))
     );
     this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.server.use(cors());
   }
 
   private async _initExceptionFilters() {
