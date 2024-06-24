@@ -12,6 +12,7 @@ import { ExceptionFilter } from '../shared/libs/rest/exception-filter/exception-
 import { ParseTokenMiddleware } from '../shared/libs/rest/middleware/parse-token.middleware.js';
 import { HttpErrorExceptionFilter } from '../shared/libs/rest/exception-filter/http-error.exception-filter.js';
 import { ValidationExceptionFilter } from '../shared/libs/rest/exception-filter/validation.exception-filter.js';
+import { getFullServerPath } from '../shared/helpers/common.js';
 
 @injectable()
 export class RestApplication {
@@ -95,7 +96,7 @@ export class RestApplication {
     this.logger.info('Try to init server...');
     await this._initServer();
     this.logger.info(
-      `Server started on http://localhost:${this.config.get('PORT')}`
+      `Server started on ${getFullServerPath(this.config.get('HOST'), this.config.get('PORT'))}`
     );
   }
 }
