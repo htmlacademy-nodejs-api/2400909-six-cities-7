@@ -1,11 +1,13 @@
-import { inject, injectable } from "inversify";
-import { Component } from "../../../types/component.enum.js";
-import { Logger } from "../../logger/logger.interface.js";
-import { Config } from "../../config/config.interface.js";
-import { RestSchema } from "../../config/rest.schema.js";
-import { DEFAULT_STATIC_IMAGES, STATIC_RESOURCE_FIELDS } from "./url-transformer.constant.js";
-import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from "../../../../rest/rest.constant.js";
-import { getFullServerUrl } from "../../../helpers/common.js";
+import { inject, injectable } from 'inversify';
+
+import { Component } from '../../../types/component.enum.js';
+import { Logger } from '../../logger/logger.interface.js';
+import { Config } from '../../config/config.interface.js';
+import { RestSchema } from '../../config/rest.schema.js';
+import { getFullServerUrl } from '../../../helpers/common.js';
+
+import { DEFAULT_STATIC_IMAGES, STATIC_RESOURCE_FIELDS } from './url-transformer.constant.js';
+import { STATIC_FILES_ROUTE, STATIC_UPLOAD_ROUTE } from '../../../../rest/rest.constant.js';
 
 function isObject(value: unknown): value is Record<string, object> {
   return typeof value === 'object' && value !== null;
