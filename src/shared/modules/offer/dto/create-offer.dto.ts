@@ -1,9 +1,11 @@
 import { MinLength, MaxLength,
   IsDateString,
   IsInt, Max, Min,
-  IsBoolean, IsArray,
-  ArrayMinSize, ArrayMaxSize,
-  IsString} from 'class-validator';
+  IsBoolean,
+  IsString,
+  IsArray,
+  ArrayMinSize,
+  ArrayMaxSize} from 'class-validator';
 
 import { CityType } from '../../../types/city.type.js';
 import { Goods, HousingType, Location } from '../../../types/offer.type.js';
@@ -23,9 +25,6 @@ export class CreateOfferDto {
 
   @IsString({ message: CreateOfferValidationMessage.type.invalid })
   public city: CityType;
-
-  @MaxLength(256, { message: CreateOfferValidationMessage.previewImage.maxLength })
-  public previewImage: string;
 
   @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
   @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.arrayMinSize })
