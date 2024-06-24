@@ -1,5 +1,6 @@
 import express, { Express } from 'express';
 import { inject, injectable } from 'inversify';
+
 import { Component } from '../shared/types/component.enum.js';
 import { Logger } from '../shared/libs/logger/logger.interface.js';
 import { Config } from '../shared/libs/config/config.interface.js';
@@ -9,6 +10,8 @@ import { RestSchema } from '../shared/libs/config/rest.schema.js';
 import { Controller } from '../shared/libs/rest/controller/controller.interface.js';
 import { ExceptionFilter } from '../shared/libs/rest/exception-filter/exception-filter.interface.js';
 import { ParseTokenMiddleware } from '../shared/libs/rest/middleware/parse-token.middleware.js';
+import { HttpErrorExceptionFilter } from '../shared/libs/rest/exception-filter/http-error.exception-filter.js';
+import { ValidationExceptionFilter } from '../shared/libs/rest/exception-filter/validation.exception-filter.js';
 
 @injectable()
 export class RestApplication {
@@ -23,6 +26,8 @@ export class RestApplication {
     @inject(Component.CommentController) private readonly commentController: Controller,
     @inject(Component.ExceptionFilter) private readonly appExceptionFilter: ExceptionFilter,
     @inject(Component.AuthExceptionFilter) private readonly authExceptionFilter: ExceptionFilter,
+    @inject(Component.HttpExceptionFilter) private readonly httpExceptionFilter: HttpErrorExceptionFilter,
+    @inject(Component.ValidationExceptionFilter) private readonly validationExceptionFilter: ValidationExceptionFilter,
   ) {
     this.server = express();
   }
@@ -63,6 +68,8 @@ export class RestApplication {
 
   private async _initExceptionFilters() {
     this.server.use(this.authExceptionFilter.catch.bind(this.authExceptionFilter));
+    this.server.use(this.validationExceptionFilter.catch.bind(this.validationExceptionFilter));
+    this.server.use(this.httpExceptionFilter.catch.bind(this.httpExceptionFilter));
     this.server.use(this.appExceptionFilter.catch.bind(this.appExceptionFilter));
   }
 
