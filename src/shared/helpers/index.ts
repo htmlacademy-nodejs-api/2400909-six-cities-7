@@ -8,7 +8,7 @@ export {
   fillDTO,
   createErrorObject,
   reduceValidationErrors,
-  getFullServerPath,
+  getFullServerUrl as getFullServerPath,
 } from './common.js';
 
 export { getMongoURI } from './database.js';
