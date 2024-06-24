@@ -2,7 +2,10 @@ import { MinLength, MaxLength,
   IsDateString,
   IsInt, Max, Min,
   IsBoolean,
-  IsString} from 'class-validator';
+  IsString,
+  IsArray,
+  ArrayMinSize,
+  ArrayMaxSize} from 'class-validator';
 
 import { CityType } from '../../../types/city.type.js';
 import { Goods, HousingType, Location } from '../../../types/offer.type.js';
@@ -22,6 +25,11 @@ export class CreateOfferDto {
 
   @IsString({ message: CreateOfferValidationMessage.type.invalid })
   public city: CityType;
+
+  @IsArray({ message: CreateOfferValidationMessage.images.invalidFormat })
+  @ArrayMinSize(6, { message: CreateOfferValidationMessage.images.arrayMinSize })
+  @ArrayMaxSize(6, { message: CreateOfferValidationMessage.images.arrayMaxSize })
+  public photo: string[];
 
   @IsBoolean({ message: CreateOfferValidationMessage.isPremium.invalidFormat })
   public isPremium: boolean;
