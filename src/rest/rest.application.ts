@@ -64,6 +64,10 @@ export class RestApplication {
       '/upload',
       express.static(this.config.get('UPLOAD_DIRECTORY'))
     );
+    this.server.use(
+      '/static',
+      express.static(this.config.get('STATIC_DIRECTORY_URL'))
+    );
     this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
   }
 
