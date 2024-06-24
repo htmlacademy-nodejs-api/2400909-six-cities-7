@@ -19,6 +19,10 @@ import { ValidateDtoMiddleware } from '../../libs/rest/middleware/validate-dto.m
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { DocumentExistsMiddleware } from '../../libs/rest/middleware/document-exists.middleware.js';
 import { PrivateRouteMiddleware } from '../../libs/rest/middleware/private-route.middleware.js';
+import { Config } from '../../libs/config/config.interface.js';
+import { RestSchema } from '../../libs/config/rest.schema.js';
+import { UploadFileMiddleware } from '../../libs/rest/middleware/upload-file.middleware.js';
+import { UploadImageRdo } from './rdo/upload-image.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -26,6 +30,7 @@ export class OfferController extends BaseController {
     @inject(Component.Logger) logger: Logger,
     @inject(Component.OfferService) protected readonly offerService: OfferService,
     @inject(Component.CommentService) protected readonly commentService: CommentService,
+    @inject(Component.Config) protected readonly configService: Config<RestSchema>,
   ) {
     super(logger);
 
@@ -81,6 +86,16 @@ export class OfferController extends BaseController {
     });
     this.addRoute({path: '/bundles/new', method: HttpMethod.Get, handler: this.getNew});
     this.addRoute({path: '/bundles/discussed', method: HttpMethod.Get, handler: this.getDiscussed});
+    this.addRoute({
+      path: '/:offerId/previewImage',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'previewImage'),
+      ]
+    });
   }
 
   public async show({params}: Request<ParamOfferId>, _res: Response): Promise<void> {
@@ -125,5 +140,12 @@ export class OfferController extends BaseController {
   public async getDiscussed(_req: Request, res: Response): Promise<void> {
     const discussedOffers = await this.offerService.findDiscussed(DEFAULT_DISCUSSED_OFFER_COUNT);
     this.ok(res, fillDTO(OfferRdo, discussedOffers));
+  }
+
+  public async uploadImage({ params, file } : Request<ParamOfferId>, res: Response) {
+    const { offerId } = params;
+    const updateDto = { previewImage: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 }
