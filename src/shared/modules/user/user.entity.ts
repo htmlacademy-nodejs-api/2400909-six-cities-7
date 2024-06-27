@@ -28,7 +28,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserData {
   public password: string;
 
   @prop({required: true})
-  public isPro: boolean;
+  public type: boolean;
 
   constructor(userData: UserData) {
     super();
@@ -37,7 +37,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserData {
     this.email = userData.email;
     this.avatarUrl = userData.avatarUrl;
     this.password = userData.password;
-    this.isPro = userData.isPro;
+    this.type = userData.type;
   }
 
   public setPassword(password: string, salt: string) {

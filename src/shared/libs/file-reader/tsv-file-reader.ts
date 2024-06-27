@@ -56,7 +56,7 @@ export class TSVFileReader extends EventEmitter implements FileReader {
       guests: parseInt(guests, 10),
       price: parseInt(price, 10),
       goods: goods.split(';') as Goods[],
-      user: {name: userName, email, avatarUrl, password, isPro: isPro === 'true'},
+      user: {name: userName, email, avatarUrl, password, type: isPro === 'true'},
       comments: parseInt(comments, 10),
       location: {latitude, longitude}
     };

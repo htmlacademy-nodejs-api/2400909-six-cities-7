@@ -1,8 +1,9 @@
+import CreateUserDto from '../user/create-user.dto';
 
 export default class CreateCommentDto {
-  public text!: string;
-
   public offerId!: string;
-
-  public userId!: string;
+  public text!: string;
+  public date!: string;
+  public rating!: number;
+  public userId!: CreateUserDto;
 }

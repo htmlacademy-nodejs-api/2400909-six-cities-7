@@ -1,6 +1,7 @@
 import { IsString, IsEmail, Length, IsBoolean } from 'class-validator';
 
 import { CreateUserMessages } from './create-user.messages.js';
+import { UserType } from '../../../types/user-data.type.js';
 
 export class CreateUserDto {
   @IsString({ message: CreateUserMessages.name.invalidFormat })
@@ -15,5 +16,5 @@ export class CreateUserDto {
   public password: string;
 
   @IsBoolean()
-  public isPro: boolean;
+  public type: UserType;
 }
