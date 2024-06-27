@@ -1,6 +1,6 @@
 import { defaultClasses, getModelForClass, modelOptions, prop } from '@typegoose/typegoose';
 
-import { UserData } from '../../types/user-data.type.js';
+import { UserData, UserType } from '../../types/user-data.type.js';
 import { createSHA256 } from '../../helpers/hash.js';
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -28,7 +28,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements UserData {
   public password: string;
 
   @prop({required: true})
-  public type: boolean;
+  public type: UserType;
 
   constructor(userData: UserData) {
     super();
